@@ -1,21 +1,15 @@
 const express = require("express")
-const path = require('path')
+const apiRoutes = require("./routes/apiRoutes")
+const htmlRoutes =require("./routes/htmlRoutes")
 const app = express(); 
 const PORT= 3001;
-const fs = require("fs")
-const notes = require("./Develop/db/db.json")
 
-app.get("/note",(req,res) => {
-res.sendFile(path.join(__dirname,'Develop/public/notes.html'))
-});
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.use(express.static("public"));
+app.use("/api",apiRoutes)
+app.use("/",htmlRoutes)
 
-app.get("/*",(req,res) => {
-    res.sendFile(path.join(__dirname,'Develop/public/index.html'))
-    });
-
-    app.get("/api/notes",(req,res)=>{
-        res.json(notes);
-    })
 
 app.listen(PORT,()=>{
 console.log(`server running on port ${PORT}`);
